@@ -24,29 +24,17 @@ It's built to demonstrate _systems + security thinking_, not just CRUD.
 
 ## 🏗️ Architecture
 
-    ┌─────────────────┐       tap       ┌───────────────────┐
-    │ Card Emulator   │ ─────────────▶ │ POS Terminal      │
-    │ (tokenization + │                 │ (APDU sequence:   │
-    │ cryptograms)    │                 │ SELECT→GPO→GEN AC)│
-    └─────────────────┘                 └─────────┬─────────┘
-                                                  │
-                                                  ▼
-                                      ┌────────────────────────┐
-                                      │ Payment Processor      │
-                                      │ (Token Vault)          │
-                                      └────────────┬───────────┘
-                                                   │
-                           ┌───────────────────────┼───────────────────────────────┐
-                           ▼                       ▼                               ▼
-                    ┌────────────────────┐ ┌──────────────────────┐ ┌────────────────────┐
-                    │ Relay Detector     │ │ Fraud Engine         │ │ Transaction Log    │
-                    │ (timing analysis)  │ │ (velocity/amount/geo)│ │                    │
-                    └────────────────────┘ └──────────────────────┘ └──────────┬─────────┘
-                                                                               ▼
-                                                                    ┌────────────────────────┐
-                                                                    │ React Dashboard        │
-                                                                    │ (live, 2s polling)     │
-                                                                    └────────────────────────┘
+```mermaid
+flowchart TD
+    A[Card Emulator<br/>tokenization + cryptograms] -->|tap| B[POS Terminal<br/>SELECT to GPO to GENERATE AC]
+    B --> C[Payment Processor<br/>Token Vault]
+    C --> D[Relay Detector<br/>timing analysis]
+    C --> E[Fraud Engine<br/>velocity / amount / geo]
+    C --> F[Transaction Log]
+    D --> F
+    E --> F
+    F --> G[React Dashboard<br/>live, 2s polling]
+```
 
 ---
 

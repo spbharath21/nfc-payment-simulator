@@ -24,30 +24,29 @@ It's built to demonstrate _systems + security thinking_, not just CRUD.
 
 ## 🏗️ Architecture
 
-    ┌─────────────────┐ tap ┌──────────────────┐
-    │ Card Emulator │ ─────────────▶ │ POS Terminal │
-    │ (tokenization + │ │ (APDU sequence: │
-    │ cryptograms) │ │ SELECT→GPO→GEN AC)│
-    └─────────────────┘ └─────────┬─────────┘
-                                  │
-                                  ▼
-                      ┌────────────────────────┐
-                      │ Payment Processor │
-                      │ (Token Vault) │
-                      └────────────┬────────────┘
-                                   │
-           ┌───────────────────────┼───────────────────────────────┐
-           ▼                       ▼                               ▼
-
-┌────────────────────┐ ┌──────────────────────┐ ┌────────────────────┐
-│ Relay Detector │ │ Fraud Engine │ │ Transaction Log │
-│ (timing analysis) │ │ (velocity/amount/geo)│ │ │
-└────────────────────┘ └──────────────────────┘ └──────────┬─────────┘
-▼
-┌────────────────────────┐
-│ React Dashboard │
-│ (live, 2s polling) │
-└────────────────────────┘
+    ┌─────────────────┐       tap       ┌───────────────────┐
+    │ Card Emulator   │ ─────────────▶ │ POS Terminal      │
+    │ (tokenization + │                 │ (APDU sequence:   │
+    │ cryptograms)    │                 │ SELECT→GPO→GEN AC)│
+    └─────────────────┘                 └─────────┬─────────┘
+                                                  │
+                                                  ▼
+                                      ┌────────────────────────┐
+                                      │ Payment Processor      │
+                                      │ (Token Vault)          │
+                                      └────────────┬───────────┘
+                                                   │
+                           ┌───────────────────────┼───────────────────────────────┐
+                           ▼                       ▼                               ▼
+                    ┌────────────────────┐ ┌──────────────────────┐ ┌────────────────────┐
+                    │ Relay Detector     │ │ Fraud Engine         │ │ Transaction Log    │
+                    │ (timing analysis)  │ │ (velocity/amount/geo)│ │                    │
+                    └────────────────────┘ └──────────────────────┘ └──────────┬─────────┘
+                                                                               ▼
+                                                                    ┌────────────────────────┐
+                                                                    │ React Dashboard        │
+                                                                    │ (live, 2s polling)     │
+                                                                    └────────────────────────┘
 
 ---
 
